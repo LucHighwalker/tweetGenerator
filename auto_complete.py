@@ -5,11 +5,13 @@ words = [line.rstrip('\n')
          for line in open('./words.txt')]
 
 possibilities = list()
+sentence = ''
 current_word = ''
 
 
 def display():
     global possibilities
+    global sentence
     global current_word
 
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -23,7 +25,7 @@ def display():
         else:
             break
     
-    display = '{}\n\n{}'.format(disp_possible, current_word)
+    display = '{}\n\n{}{}'.format(disp_possible, sentence, current_word)
     print(display)
 
 
@@ -47,12 +49,22 @@ def get_possibilities(letter):
 
 
 def user_input():
+    global possibilities
+    global sentence
     global current_word
 
     try:
         user_input = getch.getch()
-        current_word = '{}{}'.format(current_word, user_input)
-        get_possibilities(user_input)
+        if user_input == ' ':
+            if len(possibilities) > 0:
+                if current_word != possibilities[0]:
+                    current_word = possibilities[0]
+            possibilities = list()
+            sentence = '{}{} '.format(sentence, current_word)
+            current_word = ''
+        else:
+            current_word = '{}{}'.format(current_word, user_input)
+            get_possibilities(user_input)
         return True
 
     except EOFError:
