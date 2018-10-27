@@ -1,7 +1,7 @@
 import random
 import os
 
-
+# command line arguments needed
 def user_input(prompt):
     try:
         user_input = input(prompt)
@@ -12,6 +12,7 @@ def user_input(prompt):
         return ''
 
 
+#  swap random index with last element then pop.
 if __name__ == "__main__":
     sentence = user_input('input a sentence: ')
     sentence_array = sentence.split(' ')

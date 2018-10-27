@@ -1,4 +1,5 @@
 import os
+import time
 import getch
 
 words = [line.rstrip('\n')
@@ -8,13 +9,26 @@ possibilities = list()
 sentence = ''
 current_word = ''
 
+cursor_timing = 1
+cursor_switched = time.time()
+cursor = '|'
+
 
 def display():
     global possibilities
     global sentence
+    global cursor_timing
+    global cursor_switched
     global current_word
+    global cursor
 
     os.system('cls' if os.name == 'nt' else 'clear')
+
+    if time.time() - cursor_switched >= cursor_timing:
+        if cursor == '':
+            cursor = '|'
+        else:
+            cursor = ''
 
     word_count = 0
     disp_possible = ''
@@ -25,7 +39,7 @@ def display():
         else:
             break
     
-    display = '{}\n\n{}{}'.format(disp_possible, sentence, current_word)
+    display = '{}\n\n{}{}{}\n\n\n'.format(disp_possible, sentence, current_word, cursor)
     print(display)
 
 
@@ -75,5 +89,5 @@ if __name__ == '__main__':
     running = True
     display()
     while running:
-        if user_input():
-            display()
+        user_input()
+        display()
