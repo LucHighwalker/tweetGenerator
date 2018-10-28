@@ -38,8 +38,9 @@ def display():
             word_count = word_count + 1
         else:
             break
-    
-    display = '{}\n\n{}{}{}\n\n\n'.format(disp_possible, sentence, current_word, cursor)
+
+    display = '{}\n\n{}{}{}\n\n\n'.format(
+        disp_possible, sentence, current_word, cursor)
     print(display)
 
 
