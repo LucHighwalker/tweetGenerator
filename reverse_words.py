@@ -1,4 +1,3 @@
-import random
 import os
 
 
@@ -17,7 +16,7 @@ if __name__ == "__main__":
     sentence_array = sentence.split(' ')
     new_sentence = ''
     while len(sentence_array) > 0:
-        last_word = sentence_array[len(sentence_array) - 1]
+        last_word = sentence_array[-1]
         sentence_array.pop()
         new_sentence = '{}{} '.format(new_sentence, last_word)
     print(new_sentence)

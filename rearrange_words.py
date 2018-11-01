@@ -1,7 +1,7 @@
 import random
 import os
 
-# command line arguments needed
+
 def user_input(prompt):
     try:
         user_input = input(prompt)
