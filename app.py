@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import stochastic
 
 app = Flask(__name__)
@@ -7,4 +7,5 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     histogram = stochastic.open_histogram('histograms/histogram.txt')
-    return stochastic.generate_sentence(histogram, 10)
+    count = request.args.get('num', default=10, type=int)
+    return stochastic.generate_sentence(histogram, count)
