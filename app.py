@@ -14,4 +14,8 @@ def hello_world():
     sentence = Sentence(histogram)
 
     count = request.args.get('num', default=10, type=int)
-    return sentence.get_sentence(count)
+    benchmark = request.args.get('bench', default=False, type=bool)
+    sentence = sentence.get_sentence(count, bool(benchmark))
+    if benchmark:
+        return "generation time: {}\n\n{}".format(sentence[0], sentence[1])
+    return sentence
