@@ -1,7 +1,9 @@
 import time
 import random
 
-from listogram import Listogram
+# from listogram import Listogram
+from dictogram import Dictogram
+from file_parser import File_Parser
 
 
 class Sentence(object):
@@ -37,22 +39,38 @@ class Sentence(object):
 
     def _generate_sentence(self, length):
         sentence = []
+        previous_word = ''
         while len(sentence) < length:
-            random_word = self._get_random_word()
+            random_word = (self._get_random_word_list() if self.is_listogram
+                           else self._get_random_word_dict(previous_word))
             sentence.append(random_word)
+            previous_word = random_word
         return sentence
 
-    def _get_random_word(self):
+    def _get_random_word_list(self):
         accumalator = 0
-        random_number = random.randint(1, self.histogram.tokens)
-        if self.is_listogram:
-            for word in self.histogram:
-                accumalator = accumalator + word[1]
+        random_number = random.randint(1, self.histogram.types)
+        for word in self.histogram:
+            accumalator = accumalator + word[1]
+            if accumalator >= random_number:
+                return word[0]
+
+    def _get_random_word_dict(self, previous_word):
+        if previous_word != '':
+            accumalator = 0
+            random_number = random.randint(
+                1, self.histogram[previous_word].types)
+            for key, val in self.histogram[previous_word].items():
+                accumalator += val
                 if accumalator >= random_number:
-                    return word[0]
+                    return key
+        else:
+            for key, _ in self.histogram.items():
+                return key
 
 
 if __name__ == "__main__":
-    histogram = Listogram("Red fish blue fish one fish two fish.".split(' '))
+    file = File_Parser('./steamman.txt')
+    histogram = Dictogram(file.parsed_file)
     sentence = Sentence(histogram)
     print(sentence.get_sentence(50, True))
