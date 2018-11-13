@@ -6,14 +6,15 @@ from __future__ import division, print_function  # Python 2 and 3 compatibility
 class Listogram(list):
     """Listogram is a histogram implemented as a subclass of the list type."""
 
-    def __init__(self, word_list=None):
+    def __init__(self, source=None):
         """Initialize this histogram as a new list and count given words."""
         super(Listogram, self).__init__()  # Initialize this as a new list
         # Add properties to track useful word counts for this histogram
         self.types = 0  # Count of distinct word types in this histogram
         self.tokens = 0  # Total count of all word tokens in this histogram
         # Count words in given list, if any
-        if word_list is not None:
+        if source is not None:
+            word_list = source
             for word in word_list:
                 self.add_count(word)
 

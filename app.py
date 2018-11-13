@@ -1,11 +1,18 @@
 from flask import Flask, request
-import stochastic
+
+from listogram import Listogram
+from file_parser import File_Parser
+from sentence import Sentence
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def hello_world():
-    histogram = stochastic.open_histogram('histograms/histogram.txt')
+    file_parser = File_Parser('./steamman.txt')
+    word_list = file_parser.parsed_file
+    listogram = Listogram(word_list)
+    sentence = Sentence(listogram)
+
     count = request.args.get('num', default=10, type=int)
-    return stochastic.generate_sentence(histogram, count)
+    return sentence.get_sentence(count)

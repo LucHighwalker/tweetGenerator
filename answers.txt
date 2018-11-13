@@ -1,0 +1,7 @@
+1. To generate a sentence using a histogram for weighting.
+2. Yes and for the most part. They might have to google what a histogram is.
+3. There global variables because I'm noob trash, they're not needed.
+4. For the most part. I am using globals so that inherently creates side effects. Other than those, there's some unnecessary coupling.
+5. Definitely, pretty much all around. 
+6. For the most part, they can be used as modules. Though some are strictly scripts.
+7. No, they can be used independantly.
