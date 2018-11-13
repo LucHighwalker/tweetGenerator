@@ -2,30 +2,35 @@
 
 from __future__ import division, print_function  # Python 2 and 3 compatibility
 
+from dictogram import Dictogram
 
-class Dictogram(dict):
-    """Dictogram is a histogram implemented as a subclass of the dict type."""
+
+class Markov(dict):
+    """Markov is a dictionary of dictograms."""
 
     def __init__(self, word_list=None):
         """Initialize this histogram as a new dict and count given words."""
-        super(Dictogram, self).__init__()  # Initialize this as a new dict
+        super(Markov, self).__init__()  # Initialize this as a new dict
         # Add properties to track useful word counts for this histogram
         self.types = 0  # Count of distinct word types in this histogram
         self.tokens = 0  # Total count of all word tokens in this histogram
         # Count words in given list, if any
         if word_list is not None:
+            previous_word = ''
             for word in word_list:
-                self.add_count(word)
+                self.add_count(word, previous_word)
+                previous_word = word
 
-    def add_count(self, word, count=1):
+    def add_count(self, word, previous_word, count=1):
         """Increase frequency count of given word by given count amount."""
-        # TODO: Increase word frequency by count
-        try:
-            self[word] = self[word] + count
-            self.tokens = self.tokens + count
-        except KeyError:
-            self[word] = count
-            self.types = self.types + 1
+        if previous_word != '':
+            try:
+                dicto = self[previous_word]
+            except KeyError:
+                dicto = Dictogram()
+                self.types += 1
+            dicto.add_count(word)
+            self[previous_word] = dicto
             self.tokens = self.tokens + count
 
     def frequency(self, word):
@@ -40,7 +45,7 @@ class Dictogram(dict):
 def print_histogram(word_list):
     print('word list: {}'.format(word_list))
     # Create a dictogram and display its contents
-    histogram = Dictogram(word_list)
+    histogram = Markov(word_list)
     print('dictogram: {}'.format(histogram))
     print('{} tokens, {} types'.format(histogram.tokens, histogram.types))
     for word in word_list[-2:]:

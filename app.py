@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-from dictogram import Dictogram
+from markov import Markov
 from file_parser import File_Parser
 from sentence import Sentence
 
@@ -10,8 +10,8 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     file = File_Parser('./steamman.txt')
-    histogram = Dictogram(file.parsed_file)
-    sentence = Sentence(histogram)
+    markov = Markov(file.parsed_file)
+    sentence = Sentence(markov)
 
     count = request.args.get('num', default=10, type=int)
     benchmark = request.args.get('bench', default=False, type=bool)
