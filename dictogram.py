@@ -14,18 +14,42 @@ class Dictogram(dict):
         self.tokens = 0  # Total count of all word tokens in this histogram
         # Count words in given list, if any
         if word_list is not None:
+            previous_word = ''
             for word in word_list:
-                self.add_count(word)
+                self.add_count(word, previous_word)
+                previous_word = word
 
-    def add_count(self, word, count=1):
+    def add_count(self, word, previous_word, count=1):
         """Increase frequency count of given word by given count amount."""
-        try:
-            self[word] = self[word] + count
-            self.tokens = self.tokens + count
-        except KeyError:
-            self[word] = count
-            self.types = self.types + 1
-            self.tokens = self.tokens + count
+        if previous_word != '':
+            try:
+                dicto = self[previous_word]
+            except KeyError:
+                dicto = {}
+            try:
+                word_count = dicto[word]
+                dicto[word] = word_count + count
+            except KeyError:
+                dicto[word] = count
+            self[previous_word] = dicto
+
+        # if previous_word != '':
+        #     dicto = self.get(previous_word, {})
+        #     word_count = dicto[previous_word].get(word, 0)
+        #     if word_count > 0:
+        #         dicto[previous_word][word] = word_count + count
+        #     else:
+        #         dicto[previous_word][word] = count
+        #     self[previous_word] = dicto
+        # try:
+        #     if previous_word != '':
+        #         self[previous_word][word] = self[previous_word][word] + count
+        #         self.tokens = self.tokens + count
+        # except KeyError:
+        #     self[previous_word] = {}
+        #     self[previous_word][word] = count
+        #     self.types = self.types + 1
+        #     self.tokens = self.tokens + count
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
