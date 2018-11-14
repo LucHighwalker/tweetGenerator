@@ -1,3 +1,6 @@
+import re
+
+
 class File_Parser(object):
 
     def __init__(self, path=None):
@@ -15,8 +18,12 @@ class File_Parser(object):
         for line in lines:
             for word in line.split():
                 if word != ' ':
+                    special_chars = re.findall("[^A-Za-z0-9']+", word)
+                    word = re.sub("[^A-Za-z0-9']+", "", word)
                     word_list.append(word.lower())
-
+                    if len(special_chars) > 0:
+                        for char in special_chars:
+                            word_list.append(char)
         return word_list
 
 

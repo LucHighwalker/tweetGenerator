@@ -2,7 +2,7 @@ import time
 import random
 
 # from listogram import Listogram
-from dictogram import Dictogram
+from markov import Markov
 from file_parser import File_Parser
 
 
@@ -71,6 +71,6 @@ class Sentence(object):
 
 if __name__ == "__main__":
     file = File_Parser('./steamman.txt')
-    histogram = Dictogram(file.parsed_file)
-    sentence = Sentence(histogram)
+    markov = Markov(file.parsed_file)
+    sentence = Sentence(markov)
     print(sentence.get_sentence(50, True))
