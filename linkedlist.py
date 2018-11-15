@@ -101,6 +101,14 @@ class LinkedList(object):
             node = node.next
         return None
 
+    def for_each(self, function):
+        """Iterates through each node and performs function with data passed
+        through."""
+        node = self.head
+        while node is not None:
+            function(node.data)
+            node = node.next
+
     def replace(self, item, value, all=False):
         """Finds and replaces a value in the linked list"""
         node = self.head
