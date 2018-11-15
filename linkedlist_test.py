@@ -144,6 +144,16 @@ class LinkedListTest(unittest.TestCase):
         assert ll.find(lambda item: item > 'B') == 'C'  # Match greater than
         assert ll.find(lambda item: item == 'X') is None  # No matching item
 
+    def test_replace_one(self):
+        ll = LinkedList(['A', 'B', 'C', 'A', 'B', 'C'])
+        ll.replace('B', 'X')
+        assert ll.items() == ['A', 'X', 'C', 'A', 'B', 'C']
+
+    def test_replace_many(self):
+        ll = LinkedList(['A', 'B', 'C', 'A', 'B', 'C'])
+        ll.replace('B', 'X', True)
+        assert ll.items() == ['A', 'X', 'C', 'A', 'X', 'C']
+
     def test_delete_with_3_items(self):
         ll = LinkedList(['A', 'B', 'C'])
         assert ll.head.data == 'A'  # First item

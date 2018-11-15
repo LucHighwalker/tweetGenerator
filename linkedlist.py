@@ -101,6 +101,25 @@ class LinkedList(object):
             node = node.next
         return None
 
+    def replace(self, item, value, all=False):
+        """Finds and replaces a value in the linked list"""
+        node = self.head
+        previous_node = None
+        while node is not None:
+            if node.data == item:
+                new_node = Node(value)
+                new_node.next = node.next
+                if node == self.head:
+                    self.head = new_node
+                if node == self.tail:
+                    self.tail = new_node
+                if previous_node is not None:
+                    previous_node.next = new_node
+                if not all:
+                    break
+            previous_node = node
+            node = node.next
+
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
         TODO: Best case running time: O(???) Why and under what conditions?
