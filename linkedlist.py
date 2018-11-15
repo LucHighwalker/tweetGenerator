@@ -85,6 +85,7 @@ class LinkedList(object):
         new_node = Node(item)
         if self.head is None:
             self.head = new_node
+            self.tail = new_node
         else:
             new_node.next = self.head
             self.head = new_node
@@ -93,8 +94,12 @@ class LinkedList(object):
         """Return an item from this linked list satisfying the given quality.
         TODO: Best case running time: O(???) Why and under what conditions?
         TODO: Worst case running time: O(???) Why and under what conditions?"""
-        # TODO: Loop through all nodes to find item where quality(item) is True
-        # TODO: Check if node's data satisfies given quality function
+        node = self.head
+        while node is not None:
+            if quality(node.data):
+                return node.data
+            node = node.next
+        return None
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
@@ -118,8 +123,9 @@ class LinkedList(object):
                     else:
                         previous_node.next = next_node
                 elif node == self.head:
-                    self.head = None
-                    self.tail = None
+                    self.head = next_node
+                    if next_node is None:
+                        self.tail = None
 
             if not item_found:
                 previous_node = node
