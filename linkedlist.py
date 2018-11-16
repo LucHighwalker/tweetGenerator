@@ -19,6 +19,7 @@ class LinkedList(object):
         """Initialize this linked list and append the given items, if any."""
         self.head = None  # First node
         self.tail = None  # Last node
+        self.size = 0
         # Append given items
         if items is not None:
             for item in items:
@@ -55,16 +56,13 @@ class LinkedList(object):
     def length(self):
         """Return the length of this linked list by traversing its nodes.
         TODO: Running time: O(???) Why and under what conditions?"""
-        count = 0
-        node = self.head
-        while node is not None:
-            count = count + 1
-            node = node.next
-        return count
+        return self.size
 
     def append(self, item):
         """Insert the given item at the tail of this linked list.
         TODO: Running time: O(???) Why and under what conditions?"""
+        self.size += 1
+
         new_node = Node(item)
         tail = self.tail
         if tail is None:
@@ -82,6 +80,8 @@ class LinkedList(object):
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
         TODO: Running time: O(???) Why and under what conditions?"""
+        self.size += 1
+
         new_node = Node(item)
         if self.head is None:
             self.head = new_node
@@ -132,6 +132,7 @@ class LinkedList(object):
         """Delete the given item from this linked list, or raise ValueError.
         TODO: Best case running time: O(???) Why and under what conditions?
         TODO: Worst case running time: O(???) Why and under what conditions?"""
+        self.size -= 1
 
         node = self.head
         previous_node = None
