@@ -19,6 +19,16 @@ class HashTable(object):
         """Return a string representation of this hash table."""
         return 'HashTable({!r})'.format(self.items())
 
+    def __iter__(self):
+        """Returns iterables in hashtable."""
+        return self._get_iterator()
+
+    def _get_iterator(self):
+        """Returns next iterator."""
+        for bucket in self.buckets:
+            for data in bucket:
+                yield data
+
     def _bucket_index(self, key):
         """Return the bucket index where the given key would be stored."""
         # Calculate the given key's hash code and transform into bucket index
@@ -122,8 +132,12 @@ def test_hash_table():
     print('contains({!r}): {}'.format('X', ht.contains('X')))
     print('length: {}'.format(ht.length()))
 
+    print('\nTesting iterability:')
+    for item in ht:
+        print(item)
+
     # Enable this after implementing delete method
-    delete_implemented = False
+    delete_implemented = True
     if delete_implemented:
         print('\nTesting delete:')
         for key in ['I', 'V', 'X']:

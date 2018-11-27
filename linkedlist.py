@@ -34,6 +34,17 @@ class LinkedList(object):
         """Return a string representation of this linked list."""
         return 'LinkedList({!r})'.format(self.items())
 
+    def __iter__(self):
+        """Returns iterables in hashtable."""
+        return self._get_iterator()
+
+    def _get_iterator(self):
+        """Returns next iterator."""
+        node = self.head
+        while node is not None:
+            yield node.data
+            node = node.next
+
     def items(self):
         """Return a list (dynamic array) of all items in this linked list.
         Best and worst case running time: O(n) for n items in the list (length)
