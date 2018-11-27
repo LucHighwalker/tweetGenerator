@@ -64,17 +64,11 @@ class LinkedList(object):
         self.size += 1
 
         new_node = Node(item)
-        tail = self.tail
-        if tail is None:
-            node = self.head
-            if node is None:
-                self.head = new_node
-                self.tail = new_node
-            else:
-                self.head.next = new_node
-                self.tail = new_node
-        else:
+        if not self.is_empty():
             self.tail.next = new_node
+            self.tail = new_node
+        else:
+            self.head = new_node
             self.tail = new_node
 
     def prepend(self, item):
@@ -83,12 +77,12 @@ class LinkedList(object):
         self.size += 1
 
         new_node = Node(item)
-        if self.head is None:
-            self.head = new_node
-            self.tail = new_node
-        else:
+        if not self.is_empty():
             new_node.next = self.head
             self.head = new_node
+        else:
+            self.head = new_node
+            self.tail = new_node
 
     def find(self, quality):
         """Return an item from this linked list satisfying the given quality.
