@@ -37,7 +37,8 @@ class HashTable(object):
     def keys(self):
         """Return a list of all keys in this hash table.
         TODO: Running time: O(???) Why and under what conditions?"""
-        # Collect all keys in each bucket
+        # O(n), it needs to check through all the nodes and add the key to the
+        # array.
         all_keys = []
         for bucket in self.buckets:
             for key, _ in bucket.items():
@@ -47,7 +48,8 @@ class HashTable(object):
     def values(self):
         """Return a list of all values in this hash table.
         TODO: Running time: O(???) Why and under what conditions?"""
-        # Collect all keys in each bucket
+        # O(n), it needs to check through all the nodes and add the value to
+        # the array.
         all_vals = []
         for bucket in self.buckets:
             for _, val in bucket.items():
@@ -57,7 +59,8 @@ class HashTable(object):
     def items(self):
         """Return a list of all items (key-value pairs) in this hash table.
         TODO: Running time: O(???) Why and under what conditions?"""
-        # Collect all pairs of key-value entries in each bucket
+        # O(n), it needs to check through all the nodes and add the data to
+        # the array.
         all_items = []
         for bucket in self.buckets:
             all_items.extend(bucket.items())
@@ -66,6 +69,7 @@ class HashTable(object):
     def length(self):
         """Return the number of key-value entries by traversing its buckets.
         TODO: Running time: O(???) Why and under what conditions?"""
+        # O(n) due to it needing to loop through all the buckets.
         total_size = 0
         for bucket in self.buckets:
             total_size += bucket.size
@@ -74,6 +78,7 @@ class HashTable(object):
     def contains(self, key):
         """Return True if this hash table contains the given key, or False.
         TODO: Running time: O(???) Why and under what conditions?"""
+        # O(n), since the find method is an O(n) operation.
         bucket_index = self._bucket_index(key)
         bucket = self.buckets[bucket_index]
         value = bucket.find(lambda node: node[0] == key)
@@ -84,6 +89,7 @@ class HashTable(object):
     def get(self, key):
         """Return the value associated with the given key, or raise KeyError.
         TODO: Running time: O(???) Why and under what conditions?"""
+        # O(n), since the find method is an O(n) operation.
         bucket_index = self._bucket_index(key)
         bucket = self.buckets[bucket_index]
         value = bucket.find(lambda node: node[0] == key)
@@ -94,6 +100,7 @@ class HashTable(object):
     def set(self, key, value):
         """Insert or update the given key with its associated value.
         TODO: Running time: O(???) Why and under what conditions?"""
+        # O(n), since the find method is an O(n) operation.
         bucket_index = self._bucket_index(key)
         bucket = self.buckets[bucket_index]
         original_val = bucket.find(lambda node: node[0] == key)
@@ -105,6 +112,7 @@ class HashTable(object):
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError.
         TODO: Running time: O(???) Why and under what conditions?"""
+        # O(n), since the find method is an O(n) operation.
         bucket_index = self._bucket_index(key)
         bucket = self.buckets[bucket_index]
         value = bucket.find(lambda node: node[0] == key)
