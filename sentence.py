@@ -2,14 +2,18 @@ import time
 import random
 
 # from listogram import Listogram
-from markov import Markov
+from dictogram import Dictogram
+# from markov import Markov
 from file_parser import File_Parser
+
+from collections import deque
 
 
 class Sentence(object):
 
-    def __init__(self, histogram):
+    def __init__(self, histogram, order=2):
         self.change_histogram(histogram)
+        self.queue = deque(maxlen=order)
 
     def change_histogram(self, histogram):
         '''Sets a new histofram'''
@@ -39,38 +43,36 @@ class Sentence(object):
 
     def _generate_sentence(self, length):
         sentence = []
-        previous_word = ''
         while len(sentence) < length:
-            random_word = (self._get_random_word_list() if self.is_listogram
-                           else self._get_random_word_dict(previous_word))
+            random_word = self._get_random_word()
             sentence.append(random_word)
-            previous_word = random_word
         return sentence
 
-    def _get_random_word_list(self):
-        accumalator = 0
-        random_number = random.randint(1, self.histogram.types)
-        for word in self.histogram:
-            accumalator = accumalator + word[1]
-            if accumalator >= random_number:
-                return word[0]
-
-    def _get_random_word_dict(self, previous_word):
-        if previous_word != '':
-            accumalator = 0
-            random_number = random.randint(
-                1, self.histogram[previous_word].types)
-            for key, val in self.histogram[previous_word].items():
-                accumalator += val
-                if accumalator >= random_number:
-                    return key
-        else:
+    def _get_random_word(self):
+        if len(self.queue) == 0:
+            # TODO: get proper starting points.
             for key, _ in self.histogram.items():
+                queue = key.split('-,-')
+                for word in queue:
+                    self.queue.append(word)
                 return key
+        else:
+            key = '-,-'.join(self.queue)
+            histogram = self.histogram[key][1]
+
+            random_num = random.randint(1, histogram.types)
+            accumalator = 0
+            for key, val in histogram.items():
+                accumalator = accumalator + val
+                if random_num <= accumalator:
+                    self.queue.append(key)
+                    return key
 
 
 if __name__ == "__main__":
     file = File_Parser('./steamman.txt')
-    markov = Markov(file.parsed_file)
-    sentence = Sentence(markov)
+    # markov = Markov(file.parsed_file)
+    histogram = Dictogram(file.parsed_file, 3)
+    # print("hsitogram: {}".format(histogram)
+    sentence = Sentence(histogram, 3)
     print(sentence.get_sentence(50, True))
