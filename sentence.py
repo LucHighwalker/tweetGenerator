@@ -11,7 +11,7 @@ from collections import deque
 
 class Sentence(object):
 
-    def __init__(self, histogram, order=2):
+    def __init__(self, histogram, order=1):
         self.change_histogram(histogram)
         self.queue = deque(maxlen=order)
 
@@ -50,17 +50,21 @@ class Sentence(object):
 
     def _get_random_word(self):
         if len(self.queue) == 0:
+            random_number = random.randint(1, self.histogram.types)
+            counter = 0
             # TODO: get proper starting points.
             for key, _ in self.histogram.items():
-                queue = key.split('-,-')
-                for word in queue:
-                    self.queue.append(word)
-                return key
+                counter += 1
+                if counter > random_number:
+                    queue = key.split('-,-')
+                    for word in queue:
+                        self.queue.append(word)
+                    return str(key).replace('-,-', ' ')
         else:
             key = '-,-'.join(self.queue)
-            histogram = self.histogram[key][1]
+            histogram = self.histogram[key]
 
-            random_num = random.randint(1, histogram.types)
+            random_num = random.randint(1, histogram.tokens)
             accumalator = 0
             for key, val in histogram.items():
                 accumalator = accumalator + val
@@ -70,9 +74,11 @@ class Sentence(object):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     file = File_Parser('./steamman.txt')
     # markov = Markov(file.parsed_file)
     histogram = Dictogram(file.parsed_file, 3)
     # print("hsitogram: {}".format(histogram)
     sentence = Sentence(histogram, 3)
     print(sentence.get_sentence(50, True))
+    print("fully generated in {} seconds".format(time.time() - start_time))

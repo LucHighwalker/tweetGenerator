@@ -27,15 +27,14 @@ class Dictogram(dict):
         key = '-,-'.join(self.queue)
         # TODO: Increase word frequency by count
         try:
-            if self.is_original:
-                freq_dict = self[key]
-                self[key] = (freq_dict[0] + count, freq_dict[1])
-            else:
+            if self.is_original is False:
                 self[key] = self[key] + count
+            elif self[key] is not None:
+                pass
             self.tokens = self.tokens + count
         except KeyError:
             if self.is_original:
-                self[key] = (count, Dictogram(original=False))
+                self[key] = Dictogram(original=False)
             else:
                 self[key] = count
             self.types = self.types + 1
@@ -43,8 +42,7 @@ class Dictogram(dict):
             
         if self.is_original is True:
             if self.prev_key is not None:
-                self[self.prev_key][1].add_count(word, count)
-            # self[self.prev_key][1].add_count(key, count)
+                self[self.prev_key].add_count(word, count)
 
         self.prev_key = key
 

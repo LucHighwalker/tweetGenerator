@@ -1,21 +1,24 @@
-from flask import Flask, request
+import flask
 
-from markov import Markov
+from dictogram import Dictogram
 from file_parser import File_Parser
 from sentence import Sentence
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
+
+file = File_Parser('./steamman.txt')
+dictogram = Dictogram(file.parsed_file, 4)
+sentence = Sentence(dictogram, 4)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello_world():
-    file = File_Parser('./steamman.txt')
-    markov = Markov(file.parsed_file)
-    sentence = Sentence(markov)
+    count = flask.request.args.get('num', default=10, type=int)
+    benchmark = flask.request.args.get('bench', default=False, type=bool)
 
-    count = request.args.get('num', default=10, type=int)
-    benchmark = request.args.get('bench', default=False, type=bool)
-    sentence = sentence.get_sentence(count, bool(benchmark))
-    if benchmark:
-        return "generation time: {}\n\n{}".format(sentence[0], sentence[1])
-    return sentence
+    resp = sentence.get_sentence(count, bool(benchmark))
+
+    response = flask.jsonify({'resp': resp})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response
